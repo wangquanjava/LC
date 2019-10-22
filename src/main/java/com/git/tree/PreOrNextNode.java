@@ -24,55 +24,13 @@ public class PreOrNextNode {
         System.out.println("后继" + nextNode);
     }
 
-    private static Node getNextNode(Node node) {
-        if (node.getRightChild() != null) {
-            return getMin(node.getRightChild());
-        } else {
-            return getGreater(node);
-        }
-    }
 
-    private static Node getGreater(Node node) {
-        if (node.getParent() == null) {
-            return null;
-        }
-        if (node.getParent().getLeftChild() == node) {
-            return node.getParent();
-        } else {
-            return getGreater(node.getParent());
-        }
-    }
 
-    private static Node getMin(Node node) {
-        if (node.getLeftChild() != null) {
-            return getMin(node.getLeftChild());
-        } else {
-            return node;
-        }
-    }
-
-    private static Node getPreNode(Node node) {
+    public static Node getPreNode(Node node) {
         if (node.getLeftChild() != null) {
             return getMax(node.getLeftChild());
         } else {
-            return getSmaller(node);
-        }
-    }
-
-    /**
-     * 获取右斜线(\)
-     */
-    private static Node getSmaller(Node node) {
-        if (node.getParent() == null) {
-            return null;
-        }
-
-        if (node.getParent().getRightChild() == node) {
-            // 如果父节点的右孩子是自己, 那就返回父节点
-            return node.getParent();
-        } else {
-            // 递归查找父节点
-            return getSmaller(node.getParent());
+            return getUpSmaller(node);
         }
     }
 
@@ -86,6 +44,55 @@ public class PreOrNextNode {
             return node;
         }
     }
+
+    /**
+     * 向上获取更小一点的node(\)
+     */
+    private static Node getUpSmaller(Node node) {
+        if (node.getParent() == null) {
+            return null;
+        }
+
+        if (node.getParent().getRightChild() == node) {
+            // 如果父节点的右孩子是自己, 那就返回父节点
+            return node.getParent();
+        } else {
+            // 递归查找父节点
+            return getUpSmaller(node.getParent());
+        }
+    }
+
+    public static Node getNextNode(Node node) {
+        if (node.getRightChild() != null) {
+            return getMin(node.getRightChild());
+        } else {
+            return getUpGreater(node);
+        }
+    }
+
+    private static Node getMin(Node node) {
+        if (node.getLeftChild() != null) {
+            return getMin(node.getLeftChild());
+        } else {
+            return node;
+        }
+    }
+
+    private static Node getUpGreater(Node node) {
+        if (node.getParent() == null) {
+            return null;
+        }
+        if (node.getParent().getLeftChild() == node) {
+            return node.getParent();
+        } else {
+            return getUpGreater(node.getParent());
+        }
+    }
+
+
+
+
+
 
     public static List<Node> init() {
         Node node1 = new Node(1);
